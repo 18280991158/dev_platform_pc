@@ -41,6 +41,8 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+store.dispatch('config/setFileServerUrl')
+
 Vue.config.productionTip = false
 
 new Vue({

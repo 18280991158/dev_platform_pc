@@ -1,4 +1,9 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes } from '@/router'
+import { loadCurrUserMenu } from '@/api/menu.js'
+import components from '@/router/modules/components.js'
+
+/* Layout */
+import Layout from '@/layout'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -11,6 +16,75 @@ function hasPermission(roles, route) {
   } else {
     return true
   }
+}
+
+function convertMenu(accessedRoutes) {
+  const routes = []
+  let i = 0
+  for (const route of accessedRoutes) {
+    let menu = null
+    if (i === 0) {
+      menu = {
+        path: '/',
+        component: Layout,
+        redirect: route.path,
+        hidden: route.metaShow === '0',
+        children: [
+          {
+            path: route.path,
+            component: components[route.component],
+            name: route.name,
+            meta: { title: route.metaTitle, icon: route.icon, affix: true }
+          }
+        ]
+      }
+    } else {
+      if (route.children === undefined) {
+        menu = {
+          path: route.path,
+          component: Layout,
+          hidden: route.metaShow === '0',
+          children: [
+            {
+              path: 'index',
+              component: components[route.component],
+              name: route.name,
+              meta: { title: route.metaTitle, icon: route.icon }
+            }
+          ]
+        }
+      } else {
+        menu = {
+          path: route.path,
+          component: Layout,
+          name: route.name,
+          hidden: route.metaShow === '0',
+          meta: {
+            title: route.metaTitle,
+            icon: route.metaIcon
+          }
+        }
+        menu.children = []
+
+        for (const _route of route.children) {
+          const _menu = {
+            path: _route.path,
+            component: components[_route.component],
+            name: _route.name,
+            hidden: _route.metaShow === '0',
+            meta: { title: _route.metaTitle }
+          }
+          if (_route.metaIcon !== undefined) {
+            _menu.meta.icon = _route.icon
+          }
+          menu.children.push(_menu)
+        }
+      }
+    }
+    routes.push(menu)
+    i++
+  }
+  return routes
 }
 
 /**
@@ -47,16 +121,14 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }) {
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      loadCurrUserMenu().then(res => {
+        const accessedRoutes = convertMenu(res.data)
+        accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+        commit('SET_ROUTES', accessedRoutes)
+        resolve(accessedRoutes)
+      })
     })
   }
 }

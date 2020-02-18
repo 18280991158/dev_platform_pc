@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function list() {
+export function getFileServer() {
   return request({
-    url: '/role/list',
+    url: '/config/getFileServer',
     method: 'get'
   })
 }
