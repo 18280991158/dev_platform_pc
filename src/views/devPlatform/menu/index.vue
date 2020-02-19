@@ -44,8 +44,8 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-      <el-form ref="form" label-position="top" :inline="true" :model="form.data" :rules="form.rules">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="40%">
+      <el-form ref="form" label-position="top" inline :model="form.data" :rules="form.rules">
         <el-form-item label="上级菜单">
           <el-input :value="form.parentMetaTitle" readonly />
         </el-form-item>
@@ -56,7 +56,11 @@
           <el-input v-model="form.data.name" />
         </el-form-item>
         <el-form-item label="菜单图标" prop="metaIcon">
-          <el-input v-model="form.data.metaIcon" />
+          <el-popover v-model="dialogIconVisible" placement="right" width="400" trigger="click">
+            <icon-list style="height:400px;overflow: auto" @confirm-select="confirmIconSelect" />
+            <el-input slot="reference" readonly :value="form.data.icon" />
+          </el-popover>
+
         </el-form-item>
         <el-form-item label="是否显示" prop="metaShow">
           <el-select v-model="form.data.metaShow">
@@ -94,8 +98,10 @@
 import { list as listRole } from '@/api/role'
 import { list as listMenuComponent } from '@/api/menuComponent'
 import * as api from '@/api/menu.js'
+import IconList from './iconList'
 export default {
   name: 'Menu',
+  components: { IconList },
   data() {
     return {
       roles: [],
@@ -119,26 +125,32 @@ export default {
         defData: {
           id: undefined,
           name: '',
-          metaIcon: '',
+          menuIconId: '',
           metaTitle: '',
           metaShow: 1,
-          component: '',
+          menuComponentId: null,
           redirect: '',
           metaTarget: '',
           path: '',
-          orderNum: 1
+          orderNum: 1,
+          parentMetaTitle: undefined,
+          icon: undefined,
+          parentId: null
         },
         data: {
           id: undefined,
           name: '',
-          metaIcon: '',
+          menuIconId: '',
           metaTitle: '',
           metaShow: 1,
-          component: '',
+          menuComponentId: null,
           redirect: '',
           metaTarget: '',
           path: '',
-          orderNum: 1
+          orderNum: 1,
+          parentMetaTitle: undefined,
+          icon: undefined,
+          parentId: null
         },
         rules: {
           metaTitle: [
@@ -147,9 +159,9 @@ export default {
           name: [
             { required: true, message: '请输入菜单标识', trigger: 'blur' }
           ]
-        },
-        parentMetaTitle: ''
-      }
+        }
+      },
+      dialogIconVisible: false
     }
   },
   mounted() {
@@ -199,15 +211,15 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.form.data.roleId = this.selectRole
-          this.loading.saveMenu = true
+          this.loading.save = true
           api.save(this.form.data).then(() => {
-            this.loading.saveMenu = false
+            this.loading.save = false
             this.dialogFormVisible = false
-            this.loadMenuByRole()
+            this.getList()
             this.$notify({ title: '成功', message: this.textMap[this.dialogStatus] + '成功', type: 'success', duration: 2000
             })
           }).catch(() => {
-            this.loading.saveMenu = false
+            this.loading.save = false
           })
         }
       })
@@ -229,7 +241,7 @@ export default {
       }).then(() => {
         api.del({ id: row.id }).then(() => {
           this.$notify({ title: '成功', message: '删除菜单成功', type: 'success', duration: 2000 })
-          this.loadMenuByRole()
+          this.getList()
         })
       })
     },
@@ -237,11 +249,21 @@ export default {
       listMenuComponent().then(res => {
         this.menuComponents = res.data
       })
+    },
+    confirmIconSelect(icon) {
+      this.form.data.icon = icon.name
+      this.form.data.menuIconId = icon.id
+      this.dialogIconVisible = false
     }
   }
 }
 </script>
 
 <style scoped>
-
+    .el-form .el-input{
+      width:300px
+    }
+    .el-form .el-select{
+      width:300px
+    }
 </style>

@@ -19,6 +19,8 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
+import '@fortawesome/fontawesome-free/css/all.css'
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -42,6 +44,12 @@ Object.keys(filters).forEach(key => {
 })
 
 store.dispatch('config/setFileServerUrl')
+
+import { listCache } from '@/api/dictionaryItem'
+Vue.prototype.$listDictionaryItem = listCache
+
+import Dictionary from '@/components/Dictionary'
+Vue.component('Dictionary', Dictionary) // 初始化组件
 
 Vue.config.productionTip = false
 

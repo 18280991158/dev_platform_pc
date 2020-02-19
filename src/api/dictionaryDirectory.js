@@ -1,24 +1,9 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
-export function login(data) {
-  return request({
-    url: '/login',
-    method: 'post',
-    data: qs.stringify(data)
-  })
-}
-
-export function getInfo() {
-  return request({
-    url: '/getUserInfo',
-    method: 'get'
-  })
-}
-
 export function listPage(data) {
   return request({
-    url: '/account/listPage',
+    url: '/dictionaryDirectory/listPage',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -26,7 +11,7 @@ export function listPage(data) {
 
 export function save(data) {
   return request({
-    url: '/account/save',
+    url: '/dictionaryDirectory/save',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -34,16 +19,24 @@ export function save(data) {
 
 export function del(query) {
   return request({
-    url: '/account/delete',
+    url: '/dictionaryDirectory/delete',
     method: 'get',
     params: query
   })
 }
 
+export function refreshCache() {
+  return request({
+    url: '/dictionaryDirectory/refreshCache',
+    method: 'get'
+  })
+}
+
 export function isExist(query) {
   return request({
-    url: '/account/isExist',
+    url: '/dictionaryDirectory/isExist',
     method: 'get',
     params: query
   })
 }
+

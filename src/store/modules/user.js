@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user'
 import router, { resetRouter } from '@/router'
 
 const state = {
+  id: null,
   name: '',
   avatar: '',
   roles: []
@@ -16,6 +17,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   }
 }
 
@@ -56,6 +60,7 @@ const actions = {
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        commit('SET_ID', data.id)
         resolve(data)
       }).catch(error => {
         reject(error)

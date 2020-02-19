@@ -61,7 +61,7 @@ function convertMenu(accessedRoutes) {
           hidden: route.metaShow === '0',
           meta: {
             title: route.metaTitle,
-            icon: route.metaIcon
+            icon: route.icon
           }
         }
         menu.children = []
@@ -74,7 +74,7 @@ function convertMenu(accessedRoutes) {
             hidden: _route.metaShow === '0',
             meta: { title: _route.metaTitle }
           }
-          if (_route.metaIcon !== undefined) {
+          if (_route.icon !== undefined) {
             _menu.meta.icon = _route.icon
           }
           menu.children.push(_menu)
