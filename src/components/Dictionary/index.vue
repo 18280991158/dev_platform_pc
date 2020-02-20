@@ -30,8 +30,8 @@ export default {
   },
   methods: {
     getLabel() {
-      if (this.value !== '' && this.value !== undefined && this.dataDictionarys.length !== 0) {
-        this.label = this.dataDictionarys.filter(item => item.value === this.value)[0].label
+      if (this.value !== '' && this.value !== undefined && this.dictionaryItem.length !== 0) {
+        this.label = this.dictionaryItem.filter(item => item.value === this.value)[0].name
       }
     }
   }

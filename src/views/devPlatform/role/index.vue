@@ -72,7 +72,7 @@ export default {
         },
         rules: {
           name: { required: true, message: '请输入角色名称', trigger: 'blur' },
-          code: { required: true, message: '请输入角色标识', trigger: 'blur' }
+          code: { required: true, validator: this.validateCode, trigger: 'blur' }
         }
       },
       dialogFormVisible: false,
@@ -138,6 +138,19 @@ export default {
           this.$notify({ title: '成功', message: '删除角色成功', type: 'success', duration: 2000 })
           this.getList()
         })
+      })
+    },
+    validateCode(rule, value, callback) {
+      if (value === '' || value === undefined) {
+        callback(new Error('请输入角色标识'))
+        return
+      }
+      api.isExist({ code: this.form.data.code, id: this.form.data.id }).then(res => {
+        if (res.data) {
+          callback(new Error('角色标识已存在'))
+        } else {
+          callback()
+        }
       })
     }
   }

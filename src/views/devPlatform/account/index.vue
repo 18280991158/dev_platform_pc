@@ -21,8 +21,14 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
         创建用户
       </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-power-off" @click="resetPassword">
+        重置密码
+      </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="danger" icon="fas fa-trash-alt" @click="batchDel">
+        删除用户
+      </el-button>
     </div>
-    <el-table v-loading="loading.getList" :data="table.data" border fit highlight-current-row style="width: 100%;">
+    <el-table v-loading="loading.getList" :data="table.data" border fit @selection-change="handleSelectionChange"> highlight-current-row style="width: 100%;">
       <el-table-column type="selection" :selectable="checkSelectable" width="55" />
       <el-table-column label="头像" width="70">
         <template slot-scope="{row}">
@@ -84,9 +90,9 @@
         <el-form-item label="账号有效期" prop="expirationDate">
           <el-date-picker v-model="form.data.expirationDate" style="width: 300px" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" />
         </el-form-item>
-        <el-form-item label="所属角色">
-          <el-checkbox-group v-model="form.selectRole">
-            <el-checkbox v-for="item in roles" :key="item.id" :value="item.id" :label="item.name" name="type" />
+        <el-form-item label="所属角色" prop="roleIds">
+          <el-checkbox-group v-model="form.data.roleIds">
+            <el-checkbox v-for="item in roles" :key="item.id" :label="item.id" name="roleIds">{{ item.name }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -139,7 +145,8 @@ export default {
           phoneNum: '',
           locke: '',
           status: '',
-          expirationDate: ''
+          expirationDate: '',
+          roleIds: []
         },
         data: {
           id: undefined,
@@ -150,11 +157,14 @@ export default {
           phoneNum: '',
           locke: '',
           status: '',
-          expirationDate: ''
+          expirationDate: '',
+          roleIds: []
         },
         rules: {
+          userName: { required: true, validator: this.validateUserName, trigger: 'blur' },
           name: { required: true, message: '请输入用户姓名', trigger: 'blur' },
-          code: { required: true, message: '请输入角色标识', trigger: 'blur' }
+          status: { required: true, message: '请选择用户状态', trigger: 'blur' },
+          roleIds: { required: true, message: '请选择角色', trigger: 'blur' }
         }
       },
       dialogFormVisible: false,
@@ -165,7 +175,8 @@ export default {
       },
       lockes: [],
       statusList: [],
-      roles: []
+      roles: [],
+      multipleSelection: []
     }
   },
   mounted() {
@@ -221,6 +232,9 @@ export default {
     },
     handleUpdate(row) {
       Object.assign(this.form.data, row)
+      for (const role of row.roles) {
+        this.form.data.roleIds.push(role.id)
+      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -241,6 +255,76 @@ export default {
             this.loading.save = false
           })
         }
+      })
+    },
+    validateUserName(rule, value, callback) {
+      if (value === '' || value === undefined) {
+        callback(new Error('请输入用户名'))
+        return
+      }
+      var uPattern = /^[a-zA-Z0-9_-]{4,16}$/
+      if (!uPattern.test(value)) {
+        callback(new Error('用户名格式必须为：4到16位（字母，数字，下划线，减号）'))
+      }
+      api.isExist({ userName: this.form.data.userName, id: this.form.data.id }).then(res => {
+        if (res.data) {
+          callback(new Error('用户名已存在'))
+        } else {
+          callback()
+        }
+      })
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    isMultipleSelection() {
+      if (this.multipleSelection.length === 0) {
+        this.$notify({ title: '警告', message: '请至少选中一项', type: 'warning' })
+        return false
+      }
+      return true
+    },
+    del(row) {
+      this.$confirm('你确定要删除该数据吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.del([row.id]).then(() => {
+          this.$notify({ title: '成功', message: '删除用户成功', type: 'success', duration: 2000 })
+          this.getList()
+        })
+      })
+    },
+    batchDel() {
+      if (!this.isMultipleSelection()) {
+        return
+      }
+      const data = []
+      for (const row of this.multipleSelection) {
+        data.push(row.id)
+      }
+      this.$confirm('你确定要删除该数据吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.del(data).then(() => {
+          this.$notify({ title: '成功', message: '删除用户成功', type: 'success', duration: 2000 })
+          this.getList()
+        })
+      })
+    },
+    resetPassword() {
+      if (!this.isMultipleSelection()) {
+        return
+      }
+      const data = []
+      for (const row of this.multipleSelection) {
+        data.push(row.id)
+      }
+      api.resetPassword(data).then(() => {
+        this.$notify({ title: '成功', message: '重置用户密码成功', type: 'success', duration: 2000 })
       })
     }
   }

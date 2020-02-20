@@ -28,15 +28,15 @@ export function save(data) {
   return request({
     url: '/account/save',
     method: 'post',
-    data: qs.stringify(data)
+    data
   })
 }
 
-export function del(query) {
+export function del(data) {
   return request({
     url: '/account/delete',
-    method: 'get',
-    params: query
+    method: 'post',
+    data
   })
 }
 
@@ -47,3 +47,12 @@ export function isExist(query) {
     params: query
   })
 }
+
+export function resetPassword(data) {
+  return request({
+    url: '/account/resetPassword',
+    method: 'post',
+    data
+  })
+}
+

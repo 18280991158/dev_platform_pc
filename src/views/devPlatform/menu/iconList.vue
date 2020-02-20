@@ -40,6 +40,7 @@ export default {
 <style lang="scss" scoped>
 
 .icons-container {
+  background-color: silver;
   margin: 10px 20px 0;
   overflow: hidden;
   .grid {
