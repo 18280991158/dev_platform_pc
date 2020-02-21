@@ -58,6 +58,7 @@ function convertMenu(accessedRoutes) {
           path: route.path,
           component: Layout,
           name: route.name,
+          alwaysShow: true,
           hidden: route.metaShow === '0',
           meta: {
             title: route.metaTitle,

@@ -8,6 +8,13 @@ export function list() {
   })
 }
 
+export function listTree() {
+  return request({
+    url: '/resourceDirectory/listTree',
+    method: 'get'
+  })
+}
+
 export function save(data) {
   return request({
     url: '/resourceDirectory/save',
@@ -17,7 +24,7 @@ export function save(data) {
 }
 export function del(query) {
   return request({
-    url: '/resourceDirectory/del',
+    url: '/resourceDirectory/delete',
     method: 'get',
     params: query
   })

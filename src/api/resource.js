@@ -11,14 +11,14 @@ export function save(data) {
 
 export function list(data) {
   return request({
-    url: '/resource/list',
+    url: '/resource/listPage',
     method: 'post',
     data: qs.stringify(data)
   })
 }
 export function del(data) {
   return request({
-    url: '/resource/del',
+    url: '/resource/delete',
     method: 'post',
     data
   })
@@ -28,7 +28,14 @@ export function isExist(data) {
   return request({
     url: '/resource/isExist',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 
+export function listResourceIdByRole(query) {
+  return request({
+    url: '/resource/listResourceIdByRole',
+    method: 'get',
+    params: query
+  })
+}

@@ -32,3 +32,19 @@ export function isExist(query) {
   })
 }
 
+export function saveRoleMenu(data) {
+  return request({
+    url: '/role/saveRoleMenu',
+    method: 'post',
+    data
+  })
+}
+
+export function saveRoleResource(data) {
+  return request({
+    url: '/role/saveRoleResource',
+    method: 'post',
+    data
+  })
+}
+

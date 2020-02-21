@@ -38,3 +38,11 @@ export function del(query) {
     params: query
   })
 }
+
+export function listMenuIdByRole(query) {
+  return request({
+    url: '/menu/listMenuIdByRole',
+    method: 'get',
+    params: query
+  })
+}

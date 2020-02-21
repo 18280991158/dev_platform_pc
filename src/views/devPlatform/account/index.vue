@@ -28,7 +28,7 @@
         删除用户
       </el-button>
     </div>
-    <el-table v-loading="loading.getList" :data="table.data" border fit @selection-change="handleSelectionChange"> highlight-current-row style="width: 100%;">
+    <el-table v-loading="loading.getList" :data="table.data" border fit highlight-current-row style="width: 100%;" @selection-change="handleSelectionChange">
       <el-table-column type="selection" :selectable="checkSelectable" width="55" />
       <el-table-column label="头像" width="70">
         <template slot-scope="{row}">

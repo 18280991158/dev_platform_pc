@@ -195,3 +195,17 @@ aside {
   font-weight: 900;
   width: 20px;
 }
+
+.el-input.is-disabled .el-input__inner {
+  background-color: #fff;
+  border-color: #dfe4ed;
+  color: #606266;
+  cursor: not-allowed;
+}
+
+.el-textarea.is-disabled .el-textarea__inner {
+  background-color: #fff;
+  border-color: #dfe4ed;
+  color: #606266;
+  cursor: not-allowed;
+}
