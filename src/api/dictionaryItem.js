@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
-export function list(data) {
+export function listPage(data) {
   return request({
-    url: '/dictionaryItem/list',
+    url: '/dictionaryItem/listPage',
     method: 'post',
     data: qs.stringify(data)
   })
@@ -17,11 +17,11 @@ export function save(data) {
   })
 }
 
-export function del(query) {
+export function del(data) {
   return request({
     url: '/dictionaryItem/delete',
-    method: 'get',
-    params: query
+    method: 'post',
+    data
   })
 }
 

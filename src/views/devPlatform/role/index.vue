@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
-        创建角色
+        创建
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-cog" @click="handleAuthoritySet">
         权限设置
@@ -33,7 +33,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="30%">
+    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="20%">
       <el-form ref="form" label-position="top" :model="form.data" :rules="form.rules">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.data.name" :disabled="dialogStatus === 'look'" />

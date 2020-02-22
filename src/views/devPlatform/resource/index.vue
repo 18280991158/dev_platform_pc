@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row :gutter="20">
       <el-col :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>资源目录</span>
           </div>
           <div class="text item">
-            <resource-directory @current-change="handleDictionaryChange" />
+            <resource-directory @current-change="handleDictionaryChange" @delete="handleDirectoryDelete" />
           </div>
         </el-card>
       </el-col>
@@ -27,10 +27,10 @@
               </el-button>
               <br>
               <el-button :disabled="currDirectory.name === undefined" class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
-                创建资源
+                创建
               </el-button>
               <el-button :disabled="currDirectory.name === undefined" class="filter-item" style="margin-left: 10px;" type="danger" icon="fas fa-trash-alt" @click="batchDel">
-                删除资源
+                删除
               </el-button>
             </div>
             <el-table v-loading="loading.getList" :data="table.data" border fit highlight-current-row style="width: 100%;" @selection-change="handleSelectionChange">
@@ -63,7 +63,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="40%">
+    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="35%">
       <el-form ref="form" label-position="top" inline :model="form.data" :rules="form.rules">
         <el-form-item label="资源名称" prop="name">
           <el-input v-model="form.data.name" :disabled="dialogStatus === 'look'" />
@@ -85,7 +85,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" :loading="loading.save" @click="save">确 定</el-button>
+        <el-button :disabled="dialogStatus === 'look'" type="primary" :loading="loading.save" @click="save">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -258,19 +258,14 @@ export default {
     handleFilter() {
       this.table.query.current = 1
       this.getList()
+    },
+    handleDirectoryDelete() {
+      this.currDirectory = {}
+      this.table.query.current = 1
+      this.table.total = 0
+      this.table.data = []
     }
   }
 
 }
 </script>
-<style scoped>
-    .el-form .el-input{
-      width:300px
-    }
-    .el-form .el-select{
-      width:300px
-    }
-    .el-form .el-cascader{
-      width:300px
-    }
-</style>

@@ -2,7 +2,7 @@
   <div>
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
-        创建目录
+        创建
       </el-button>
     </div>
     <el-table v-loading="loading.getList" row-key="id" :data="table.data" border default-expand-all fit highlight-current-row style="width: 100%;" @current-change="handleCurrentChange">
@@ -32,7 +32,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" :loading="loading.save" @click="save">确 定</el-button>
+        <el-button type="primary" :disabled="dialogStatus === 'look'" :loading="loading.save" @click="save">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -144,6 +144,7 @@ export default {
       }).then(() => {
         api.del({ id: row.id }).then(() => {
           this.$notify({ title: '成功', message: '删除菜单成功', type: 'success', duration: 2000 })
+          this.$emit('delete')
           this.getList()
         })
       })
@@ -155,16 +156,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-    .el-form .el-input{
-      width:300px
-    }
-    .el-form .el-select{
-      width:300px
-    }
-    .el-form .el-cascader{
-      width:300px
-    }
-</style>
-

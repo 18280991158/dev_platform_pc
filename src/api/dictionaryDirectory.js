@@ -17,11 +17,11 @@ export function save(data) {
   })
 }
 
-export function del(query) {
+export function del(data) {
   return request({
     url: '/dictionaryDirectory/delete',
-    method: 'get',
-    params: query
+    method: 'post',
+    data
   })
 }
 

@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
-        创建菜单
+        创建
       </el-button>
     </div>
     <el-table v-loading="loading.getList" row-key="id" :data="table.data" border default-expand-all fit highlight-current-row style="width: 100%;">
@@ -38,7 +38,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="40%">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="35%">
       <el-form ref="form" label-position="top" inline :model="form.data" :rules="form.rules">
         <el-form-item label="上级菜单">
           <el-cascader v-model="form.data.parents" :disabled="dialogStatus === 'look'" clearable :options="table.data" :props="{checkStrictly: true,value:'id',label:'metaTitle'}" />
@@ -188,7 +188,6 @@ export default {
       }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.form.parentMetaTitle = row.parentMetaTitle
       this.$nextTick(() => {
         this.$refs['form'].clearValidate()
       })
@@ -249,15 +248,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-    .el-form .el-input{
-      width:300px
-    }
-    .el-form .el-select{
-      width:300px
-    }
-    .el-form .el-cascader{
-      width:300px
-    }
-</style>
