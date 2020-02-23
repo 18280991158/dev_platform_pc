@@ -19,7 +19,7 @@
           <div class="text item">
             <div class="filter-container">
               <el-input v-model="table.query.name" :disabled="currDirectory.name === undefined" style="width: 200px;" placeholder="字典名称|键值" class="filter-item" />
-              <el-button v-waves :disabled="currDirectory.name === undefined" :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+              <el-button :disabled="currDirectory.name === undefined" :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
                 搜索
               </el-button>
               <br>

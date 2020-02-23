@@ -25,7 +25,7 @@
               <el-select v-model="table.query.locke" placeholder="是否锁定" clearable class="filter-item" @change="handleFilter">
                 <el-option v-for="item in lockes" :key="item.id" :label="item.name" :value="item.value" />
               </el-select>
-              <el-button v-waves :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+              <el-button :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
                 搜索
               </el-button>
               <br>
@@ -43,7 +43,7 @@
               <el-table-column type="selection" :selectable="checkSelectable" width="55" />
               <el-table-column label="头像" width="70">
                 <template slot-scope="{row}">
-                  <img :src="$store.getters.fileServerUrl+'/avatar/'+row.avatar" class="user-avatar">
+                  <img :src="$store.getters.fileServerUrl+'/file/avatar/'+row.avatar" class="user-avatar">
                 </template>
               </el-table-column>
               <el-table-column label="用户名" prop="userName" />

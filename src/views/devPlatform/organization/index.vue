@@ -1,8 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-input v-model="table.query.name" style="width: 200px;" placeholder="机构名称|编码" class="filter-item" />
+      <el-select v-model="table.query.type" placeholder="机构类型" clearable class="filter-item" @change="getList">
+        <el-option v-for="item in types" :key="item.id" :label="item.name" :value="item.value" />
+      </el-select>
+      <el-button :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="getList">
+        搜索
+      </el-button>
+      <br>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-plus" @click="handleCreate">
         创建
+      </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-file-import" @click="dialogImportVisible = true">
+        导入
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-file-export" @click="exportExcel">
         导出
@@ -15,6 +26,7 @@
           <dictionary v-if="types.length !== 0" :dictionary-item="types" :value="row.type" />
         </template>
       </el-table-column>
+      <el-table-column prop="code" label="机构编码" />
       <el-table-column prop="orderNum" label="顺序" />
       <el-table-column prop="description" label="备注" />
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
@@ -64,6 +76,25 @@
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" :disabled="dialogStatus === 'look'" :loading="loading.save" @click="save">确 定</el-button>
       </span>
+    </el-dialog>
+
+    <el-dialog title="导入机构列表" :visible.sync="dialogImportVisible" :close-on-click-modal="false" width="30%">
+      <el-alert v-if="importErrMsg !== ''" :closable="false" :title="importErrMsg" type="error" />
+      <el-upload
+        ref="import_excel"
+        class="upload-demo"
+        drag
+        :action="importAction"
+        with-credentials
+        multiple
+        accept=".xlsx"
+        :on-success="handleImportSuccess"
+        :limit="1"
+      >
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">只能上传.xlsx文件，且不超过500kb</div>
+      </el-upload>
     </el-dialog>
   </div>
 </template>
@@ -117,7 +148,10 @@ export default {
         create: '创建机构',
         look: '查看机构'
       },
-      types: []
+      types: [],
+      dialogImportVisible: false,
+      importErrMsg: '',
+      importAction: process.env.VUE_APP_BASE_API + '/organization/importExcel'
     }
   },
   mounted() {
@@ -226,6 +260,18 @@ export default {
     },
     exportExcel() {
       window.open(process.env.VUE_APP_BASE_API + '/organization/exportExcel')
+    },
+    handleImportSuccess(res) {
+      if (res.code === 200) {
+        this.importErrMsg = ''
+        this.dialogImportVisible = false
+        this.$refs['import_excel'].clearFiles()
+        this.$notify({ title: '成功', message: '导入机构成功', type: 'success', duration: 2000 })
+        this.getList()
+        this.parent = null
+      } else {
+        this.importErrMsg = res.msg
+      }
     }
 
   }

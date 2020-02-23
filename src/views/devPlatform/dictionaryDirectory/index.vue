@@ -2,7 +2,7 @@
   <div>
     <div class="filter-container">
       <el-input v-model="table.query.name" style="width: 200px;" placeholder="字典名称|编码" class="filter-item" />
-      <el-button v-waves :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
       <br>

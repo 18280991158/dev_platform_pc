@@ -6,7 +6,8 @@ const components = {
   'resource': () => import('@/views/devPlatform/resource/index'),
   'dict': () => import('@/views/devPlatform/dict/index'),
   'dictbiz': () => import('@/views/devPlatform/dictbiz/index'),
-  'organization': () => import('@/views/devPlatform/organization/index')
+  'organization': () => import('@/views/devPlatform/organization/index'),
+  'systemParameter': () => import('@/views/devPlatform/systemParameter/index')
 
 }
 

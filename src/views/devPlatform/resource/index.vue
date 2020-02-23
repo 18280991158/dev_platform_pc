@@ -22,7 +22,7 @@
               <el-select v-model="table.query.filterType" placeholder="拦截类型" clearable class="filter-item" @change="handleFilter">
                 <el-option v-for="item in filterTypes" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
-              <el-button v-waves :disabled="currDirectory.name === undefined" :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+              <el-button :disabled="currDirectory.name === undefined" :loading="loading.getList" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
                 搜索
               </el-button>
               <br>

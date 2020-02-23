@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tree ref="tree" :data="tree.data" show-checkbox node-key="id" :default-checked-keys="checkedData" :props="{label:'metaTitle'}" @check-change="handleCheckChange" />
+    <el-tree ref="tree" style="height:400px;overflow: auto" :data="tree.data" show-checkbox node-key="id" :props="{label:'metaTitle'}" />
   </div>
 </template>
 
@@ -19,8 +19,7 @@ export default {
     return {
       tree: {
         data: []
-      },
-      checkedData: []
+      }
 
     }
   },
@@ -41,20 +40,17 @@ export default {
     },
     listMenuIdByRole() {
       api.listMenuIdByRole({ roleId: this.roleId }).then(res => {
-        this.checkedData = res.data
+        this.$refs.tree.setCheckedKeys(res.data)
       })
     },
     getCheckedData() {
-      return this.checkedData
-    },
-    handleCheckChange(data, checked, childCheck) {
-      const index = this.checkedData.indexOf(data.id)
-      if (index === -1 && checked) {
-        this.checkedData.push(data.id)
+      let checkedNodes = this.$refs.tree.getCheckedNodes()
+      checkedNodes = checkedNodes.filter(item => item.children === undefined)
+      const data = []
+      for (const node of checkedNodes) {
+        data.push(node.id)
       }
-      if (index !== -1 && !checked) {
-        this.checkedData.splice(index, 1)
-      }
+      return data
     }
   }
 
