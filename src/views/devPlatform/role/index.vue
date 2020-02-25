@@ -7,7 +7,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="fas fa-cog" @click="handleAuthoritySet">
         权限设置
       </el-button>
-      <el-button class="filter-item" :loading="loading.refreshCache" style="margin-left: 10px;" type="primary" icon="fas fa-sync-alt" @click="refreshMenuCache">
+      <el-button class="filter-item" :loading="loading.refreshCache" style="margin-left: 10px;" type="primary" icon="fas fa-sync-alt" @click="refreshCache">
         刷新缓存
       </el-button>
     </div>
@@ -68,7 +68,6 @@
 </template>
 <script>
 import * as api from '@/api/role'
-import { refreshCache as refreshMenuCache } from '@/api/menu'
 import SetMenu from './setMenu'
 import SetResource from './setResource'
 export default {
@@ -246,9 +245,9 @@ export default {
           break
       }
     },
-    refreshMenuCache() {
+    refreshCache() {
       this.loading.refreshCache = true
-      refreshMenuCache().then(() => {
+      api.refreshCache().then(() => {
         this.$notify({ title: '成功', message: '刷新缓存成功', type: 'success', duration: 2000 })
         this.loading.refreshCache = false
       }).catch(() => {

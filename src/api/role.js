@@ -48,3 +48,10 @@ export function saveRoleResource(data) {
   })
 }
 
+export function refreshCache() {
+  return request({
+    url: '/role/refreshCache',
+    method: 'get'
+  })
+}
+
