@@ -39,6 +39,10 @@ service.interceptors.response.use(
     if (res.code === 200) {
       return res
     }
+    if (res.code === 401) {
+      router.push('/login')
+      return
+    }
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       Message({
@@ -48,14 +52,6 @@ service.interceptors.response.use(
       })
       return Promise.reject(new Error(res.message || 'Error'))
     }
-  },
-  error => {
-    const errorState = error.response.status
-    debugger
-    if (errorState === 401) {
-      router.push('/login')
-    }
-    return Promise.reject(error)
   }
 )
 
