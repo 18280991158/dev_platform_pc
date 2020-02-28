@@ -7,7 +7,8 @@ const components = {
   'dict': () => import('@/views/devPlatform/dict/index'),
   'dictbiz': () => import('@/views/devPlatform/dictbiz/index'),
   'organization': () => import('@/views/devPlatform/organization/index'),
-  'systemParameter': () => import('@/views/devPlatform/systemParameter/index')
+  'systemParameter': () => import('@/views/devPlatform/systemParameter/index'),
+  'myInfo': () => import('@/views/myInfo/index')
 
 }
 

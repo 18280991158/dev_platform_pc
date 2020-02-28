@@ -64,7 +64,7 @@
         </el-form-item>
         <el-form-item label="菜单组件" prop="component">
           <el-select v-model="form.data.menuComponentId" :disabled="dialogStatus === 'look'" clearable filterable>
-            <el-option v-for="item in menuComponents" :key="item" :label="item.name" :value="item.id" />
+            <el-option v-for="item in menuComponents" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="外链" prop="metaTarget">

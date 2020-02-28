@@ -16,6 +16,13 @@ export function getInfo() {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/logout',
+    method: 'get'
+  })
+}
+
 export function listPage(data) {
   return request({
     url: '/account/listPage',

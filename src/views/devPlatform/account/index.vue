@@ -43,7 +43,8 @@
               <el-table-column type="selection" :selectable="checkSelectable" width="55" />
               <el-table-column label="头像" width="70">
                 <template slot-scope="{row}">
-                  <img :src="$store.getters.fileServerUrl+'/file/avatar/'+row.avatar" class="user-avatar">
+                  <el-avatar size="large" :src="$store.getters.fileServerUrl+'/file/avatar/'+row.avatar" />
+
                 </template>
               </el-table-column>
               <el-table-column label="用户名" prop="userName" />
@@ -413,12 +414,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-  .user-avatar {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-  }
-</style>

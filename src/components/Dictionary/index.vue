@@ -12,7 +12,8 @@ export default {
     },
     value: {
       required: true,
-      type: String
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -30,8 +31,9 @@ export default {
   },
   methods: {
     getLabel() {
-      if (this.value !== '' && this.value !== undefined && this.dictionaryItem.length !== 0) {
-        this.label = this.dictionaryItem.filter(item => item.value === this.value)[0].name
+      const filters = this.dictionaryItem.filter(item => item.value === this.value)
+      if (filters.length !== 0) {
+        this.label = filters[0].name
       }
     }
   }

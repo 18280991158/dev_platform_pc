@@ -112,7 +112,8 @@ export default {
           size: 10,
           current: 1,
           name: ''
-        }
+        },
+        total: 0
       },
       form: {
         defData: {
