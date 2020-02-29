@@ -44,7 +44,6 @@
               <el-table-column label="头像" width="70">
                 <template slot-scope="{row}">
                   <el-avatar size="large" :src="$store.getters.fileServerUrl+'/file/avatar/'+row.avatar" />
-
                 </template>
               </el-table-column>
               <el-table-column label="用户名" prop="userName" />

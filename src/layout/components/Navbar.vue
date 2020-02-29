@@ -12,7 +12,7 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
+        <el-tooltip content="字体大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
@@ -29,6 +29,9 @@
           </router-link>
           <router-link to="/myInfo/index">
             <el-dropdown-item>个人信息</el-dropdown-item>
+          </router-link>
+          <router-link v-if=" $store.getters.roles.length > 1" to="/changeRole/index">
+            <el-dropdown-item>切换角色</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
@@ -47,7 +50,6 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-
 export default {
   components: {
     Breadcrumb,
@@ -56,6 +58,13 @@ export default {
     Screenfull,
     SizeSelect,
     Search
+  },
+  data() {
+    return {
+      currRoleId: null,
+      selectRoleId: null,
+      dialogChangeVisible: false
+    }
   },
   computed: {
     ...mapGetters([

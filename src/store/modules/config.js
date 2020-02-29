@@ -24,8 +24,11 @@ const actions = {
     })
   },
   setSystemName({ commit }) {
-    getParamValue({ paramKey: 'platform:systemName' }).then(res => {
-      commit('SET_SYSTEM_NAME', res.data)
+    return new Promise((resolve, reject) => {
+      getParamValue({ paramKey: 'platform:systemName' }).then(res => {
+        commit('SET_SYSTEM_NAME', res.data)
+        resolve(res.data)
+      })
     })
   },
   setLogo({ commit }) {

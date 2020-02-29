@@ -8,7 +8,8 @@ const components = {
   'dictbiz': () => import('@/views/devPlatform/dictbiz/index'),
   'organization': () => import('@/views/devPlatform/organization/index'),
   'systemParameter': () => import('@/views/devPlatform/systemParameter/index'),
-  'myInfo': () => import('@/views/myInfo/index')
+  'myInfo': () => import('@/views/myInfo/index'),
+  'changeRole': () => import('@/views/changeRole/index')
 
 }
 

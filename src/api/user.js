@@ -63,3 +63,49 @@ export function resetPassword(data) {
   })
 }
 
+export function editMyPassword(query) {
+  return request({
+    url: '/account/editMyPassword',
+    method: 'get',
+    params: query
+  })
+}
+
+export function editMyAvatar(query) {
+  return request({
+    url: '/account/editMyAvatar',
+    method: 'get',
+    params: query
+  })
+}
+
+export function editMyInfo(data) {
+  return request({
+    url: '/account/editMyInfo',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+
+export function listUserRoles() {
+  return request({
+    url: '/listUserRoles',
+    method: 'get'
+  })
+}
+
+export function getCurrRole() {
+  return request({
+    url: '/getCurrRole',
+    method: 'get'
+  })
+}
+
+export function setCurrRole(query) {
+  return request({
+    url: '/setCurrRole',
+    method: 'get',
+    params: query
+  })
+}
+

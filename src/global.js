@@ -5,7 +5,6 @@ import { Notification } from 'element-ui'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 store.dispatch('config/setFileServerUrl')
-store.dispatch('config/setSystemName')
 store.dispatch('config/setLogo')
 
 import { listCache } from '@/api/dictionaryItem'

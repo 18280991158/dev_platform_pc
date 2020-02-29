@@ -1,10 +1,9 @@
-import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || 'Vue Element Admin'
+import store from '../store/index'
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {
-    return `${pageTitle} - ${title}`
+    return `${pageTitle} - ${store.getters.systemName}`
   }
-  return `${title}`
+  return `${store.getters.systemName}`
 }
