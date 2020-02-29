@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-tree ref="tree" style="height:400px;overflow: auto" :data="tree.data" show-checkbox node-key="id" :props="{label:'metaTitle'}" />
+    <el-tree ref="tree" style="height:400px;overflow: auto" :data="tree.data" show-checkbox node-key="id" :props="{label:'metaTitle'}">
+      <span slot-scope="{ node,data}" class="custom-tree-node">
+        <span>{{ node.label+(data.component === undefined?'': '-'+data.component) }}</span>
+      </span>
+    </el-tree>
   </div>
 </template>
 

@@ -9,7 +9,7 @@
       <el-table-column prop="metaTitle" label="菜单显示名称" />
       <el-table-column label="菜单图标">
         <template slot-scope="{row}">
-          <svg-icon :icon-class="row.icon" /> {{ row.icon }}
+          <svg-icon v-if="row.icon !== undefined" :icon-class="row.icon" />{{ row.icon }}
         </template>
       </el-table-column>
       <el-table-column prop="name" label="菜单标识" />
