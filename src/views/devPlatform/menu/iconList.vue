@@ -1,7 +1,7 @@
 <template>
   <div class="icons-container">
     <div class="grid">
-      <div v-for="item of svgIcons" :key="item">
+      <div v-for="item of svgIcons" :key="item.id">
         <div class="icon-item" @click="handleClick(item)">
           <svg-icon :icon-class="item.code" />
           <span>{{ item.name }}</span>

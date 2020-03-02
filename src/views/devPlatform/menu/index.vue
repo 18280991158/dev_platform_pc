@@ -41,7 +41,9 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="35%">
       <el-form ref="form" label-position="top" inline :model="form.data" :rules="form.rules">
         <el-form-item label="上级菜单">
-          <el-cascader v-model="form.data.parents" :disabled="dialogStatus === 'look'" clearable :options="table.data" :props="{checkStrictly: true,value:'id',label:'metaTitle'}" />
+          <el-select v-model="form.data.parentId" @change="handleParentChange">
+            <el-option v-for="item in parents" :key="item.id" :label="item.metaTitle" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="菜单显示名称" prop="metaTitle">
           <el-input v-model="form.data.metaTitle" :disabled="dialogStatus === 'look'" />
@@ -155,7 +157,8 @@ export default {
           ]
         }
       },
-      dialogIconVisible: false
+      dialogIconVisible: false,
+      parents: []
     }
   },
   mounted() {
@@ -168,12 +171,14 @@ export default {
       api.list({}).then(res => {
         this.table.data = res.data
         this.loading.getList = false
+        this.parents = res.data.filter(item => item.component === undefined)
       }).catch(() => {
         this.loading.getList = false
       })
     },
     handleCreate() {
       Object.assign(this.form.data, this.form.defData)
+      this.form.data.orderNum = this.table.data.length + 1
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -183,9 +188,6 @@ export default {
     handleUpdate(row) {
       Object.assign(this.form.data, this.form.defData)
       Object.assign(this.form.data, row)
-      if (row.parents !== undefined) {
-        this.form.data.parents = JSON.parse(row.parents)
-      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -195,9 +197,6 @@ export default {
     handleLook(row) {
       Object.assign(this.form.data, this.form.defData)
       Object.assign(this.form.data, row)
-      if (row.parents !== undefined) {
-        this.form.data.parents = JSON.parse(row.parents)
-      }
       this.dialogStatus = 'look'
       this.dialogFormVisible = true
       this.form.parentMetaTitle = row.parentMetaTitle
@@ -206,11 +205,6 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading.save = true
-          const parents = this.form.data.parents
-          if (parents.length !== 0) {
-            this.form.data.parentId = parents[parents.length - 1]
-            this.form.data.parents = JSON.stringify(parents)
-          }
           api.save(this.form.data).then(() => {
             this.loading.save = false
             this.dialogFormVisible = false
@@ -244,6 +238,14 @@ export default {
       this.form.data.icon = icon.name
       this.form.data.menuIconId = icon.id
       this.dialogIconVisible = false
+    },
+    handleParentChange(val) {
+      const parent = this.table.data.filter(item => item.id === val)[0]
+      if (parent.children === undefined || parent.children.length === 0) {
+        this.form.data.orderNum = 1
+      } else {
+        this.form.data.orderNum = parent.children.length + 1
+      }
     }
   }
 }
