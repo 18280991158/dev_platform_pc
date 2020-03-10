@@ -1,11 +1,12 @@
-import { login, logout, getInfo, listUserRoles } from '@/api/user'
+import { login, logout, getInfo, listUserRoles, getCurrRoleInfo } from '@/api/user'
 import { resetRouter } from '@/router'
 
 const state = {
   id: null,
   name: '',
   avatar: '',
-  roles: []
+  roles: [],
+  currRole: null
 }
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_ID: (state, id) => {
     state.id = id
+  },
+  SET_CURR_ROLE: (state, currRole) => {
+    state.currRole = currRole
   }
 }
 
@@ -53,6 +57,10 @@ const actions = {
         listUserRoles().then(res => {
           commit('SET_ROLES', res.data)
         })
+        getCurrRoleInfo().then(res => {
+          commit('SET_CURR_ROLE', res.data)
+        })
+
         resolve(data)
       }).catch(error => {
         reject(error)

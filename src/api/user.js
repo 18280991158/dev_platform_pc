@@ -101,6 +101,13 @@ export function getCurrRole() {
   })
 }
 
+export function getCurrRoleInfo() {
+  return request({
+    url: '/getCurrRoleInfo',
+    method: 'get'
+  })
+}
+
 export function setCurrRole(query) {
   return request({
     url: '/setCurrRole',
