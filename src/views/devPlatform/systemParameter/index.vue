@@ -201,7 +201,9 @@ export default {
       Object.assign(this.form.data, row)
       this.dialogStatus = 'look'
       this.dialogFormVisible = true
-      this.form.parentMetaTitle = row.parentMetaTitle
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
     },
     save() {
       this.$refs.form.validate(valid => {

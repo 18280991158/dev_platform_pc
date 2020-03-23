@@ -224,6 +224,9 @@ export default {
       }
       this.dialogStatus = 'look'
       this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
     },
     save() {
       this.$refs.form.validate(valid => {

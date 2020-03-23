@@ -112,8 +112,10 @@ export default {
         this.form.data.parents = JSON.parse(row.parents)
       }
       this.dialogStatus = 'look'
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
       this.dialogFormVisible = true
-      this.form.parentMetaTitle = row.parentMetaTitle
     },
     save() {
       this.$refs.form.validate(valid => {

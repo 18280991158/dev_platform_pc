@@ -24,7 +24,7 @@ export default {
   },
   watch: {
     roleId() {
-      this.listResource()
+      this.listResourceIdByRole()
     }
   },
   mounted() {

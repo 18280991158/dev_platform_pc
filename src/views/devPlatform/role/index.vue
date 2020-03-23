@@ -156,7 +156,9 @@ export default {
       }
       this.dialogStatus = 'look'
       this.dialogFormVisible = true
-      this.form.parentMetaTitle = row.parentMetaTitle
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
     },
     handleAuthoritySet() {
       if (!this.$CheckSelection(false, this.multipleSelection)) {
