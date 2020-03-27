@@ -6,7 +6,7 @@
           <div slot="header" class="clearfix">
             <span>资源目录</span>
           </div>
-          <div class="text item">
+          <div class="text item" style="height:700px;overflow: auto">
             <resource-directory @current-change="handleDictionaryChange" @delete="handleDirectoryDelete" />
           </div>
         </el-card>

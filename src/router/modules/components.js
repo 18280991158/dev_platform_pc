@@ -9,7 +9,8 @@ const components = {
   'organization': () => import('@/views/devPlatform/organization/index'),
   'systemParameter': () => import('@/views/devPlatform/systemParameter/index'),
   'myInfo': () => import('@/views/myInfo/index'),
-  'changeRole': () => import('@/views/changeRole/index')
+  'changeRole': () => import('@/views/changeRole/index'),
+  'userLogin': () => import('@/views/devPlatform/userLogin/index')
 
 }
 
