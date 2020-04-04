@@ -6,7 +6,10 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+
+        <el-tooltip content="使用指南" effect="dark" placement="bottom">
+          <HelpDescription class="right-menu-item hover-effect" />
+        </el-tooltip>
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
@@ -39,6 +42,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
   </div>
 </template>
 
@@ -49,7 +53,7 @@ import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
+import HelpDescription from '@/components/HelpDescription'
 export default {
   components: {
     Breadcrumb,
@@ -57,7 +61,7 @@ export default {
     ErrorLog,
     Screenfull,
     SizeSelect,
-    Search
+    HelpDescription
   },
   data() {
     return {

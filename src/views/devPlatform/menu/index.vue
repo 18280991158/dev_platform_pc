@@ -9,7 +9,17 @@
       <el-table-column prop="metaTitle" label="菜单显示名称" />
       <el-table-column label="菜单图标">
         <template slot-scope="{row}">
-          <svg-icon v-if="row.icon !== undefined" :icon-class="row.icon" />{{ row.icon }}
+
+          <svg-icon v-if="row.icon !== undefined && row.menuIconType === '1'" :icon-class="row.icon" />
+
+          <el-image v-if="row.icon !== undefined && (row.menuIconType === '2' || row.menuIconType === '4')" style="width: 20px; height: 20px" :src="$store.getters.fileServerUrl+'/file/menu/'+row.icon" />
+
+        </template>
+      </el-table-column>
+      <el-table-column label="选中菜单图标">
+        <template slot-scope="{row}">
+          <el-image v-if="row.selectIcon !== undefined" style="width: 20px; height: 20px" :src="$store.getters.fileServerUrl+'/file/menu/'+row.selectIcon" />
+
         </template>
       </el-table-column>
       <el-table-column prop="name" label="菜单标识" />
@@ -48,16 +58,36 @@
         <el-form-item label="菜单显示名称" prop="metaTitle">
           <el-input v-model="form.data.metaTitle" :disabled="dialogStatus === 'look'" />
         </el-form-item>
-        <el-form-item label="菜单标识" prop="name">
-          <el-input v-model="form.data.name" :disabled="dialogStatus === 'look'" />
+
+        <el-form-item label="图标类型">
+          <el-select v-model="form.data.menuIconType" :disabled="dialogStatus === 'look'">
+            <el-option v-for="item in iconTypes" :key="item.id" :label="item.name" :value="item.value" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="菜单图标" prop="metaIcon">
+        <br v-if="form.data.menuIconType === '4'">
+        <el-form-item v-if="form.data.menuIconType === '1'" label="菜单图标">
           <el-popover v-model="dialogIconVisible" :disabled="dialogStatus === 'look'" placement="right" width="400" trigger="click">
             <icon-list style="height:400px;overflow: auto" @confirm-select="confirmIconSelect" />
             <el-input slot="reference" readonly :value="form.data.icon" />
           </el-popover>
-
         </el-form-item>
+        <el-form-item v-if="form.data.menuIconType === '2' || form.data.menuIconType === '4'" label="菜单图标">
+          <UploadImg :form-data="form.data" :visible="dialogFormVisible" folder="menu" field-name="icon" />
+        </el-form-item>
+
+        <el-form-item v-if="form.data.menuIconType === '4'" label="选中菜单图标">
+          <UploadImg :form-data="form.data" :visible="dialogFormVisible" folder="menu" field-name="selectIcon" />
+        </el-form-item>
+
+        <el-form-item v-if="form.data.menuIconType === '3'" label="菜单图标">
+          <el-input v-model="form.data.icon" :disabled="dialogStatus === 'look'" />
+        </el-form-item>
+        <br v-if="form.data.menuIconType === '4'">
+
+        <el-form-item label="菜单标识" prop="name">
+          <el-input v-model="form.data.name" :disabled="dialogStatus === 'look'" />
+        </el-form-item>
+
         <el-form-item label="是否显示" prop="metaShow">
           <el-select v-model="form.data.metaShow" :disabled="dialogStatus === 'look'">
             <el-option label="显示" value="1" />
@@ -92,11 +122,12 @@
 
 <script>
 import { list as listMenuComponent } from '@/api/menuComponent'
+import UploadImg from '../../upload/uploadImg'
 import * as api from '@/api/menu.js'
 import IconList from './iconList'
 export default {
   name: 'Menu',
-  components: { IconList },
+  components: { IconList, UploadImg },
   data() {
     return {
       menuComponents: [],
@@ -130,6 +161,7 @@ export default {
           parentMetaTitle: undefined,
           icon: undefined,
           parentId: null,
+          menuIconType: '1',
           parents: []
         },
         data: {
@@ -146,7 +178,8 @@ export default {
           parentMetaTitle: undefined,
           icon: undefined,
           parentId: null,
-          parents: []
+          parents: [],
+          menuIconType: '1'
         },
         rules: {
           metaTitle: [
@@ -158,12 +191,14 @@ export default {
         }
       },
       dialogIconVisible: false,
-      parents: []
+      parents: [],
+      iconTypes: []
     }
   },
   mounted() {
     this.getMenuComponents()
     this.getList()
+    this.getIconTypes()
   },
   methods: {
     getList() {
@@ -246,6 +281,11 @@ export default {
       } else {
         this.form.data.orderNum = parent.children.length + 1
       }
+    },
+    getIconTypes() {
+      this.$listDictionaryItem({ code: 'menu_icon_type' }).then(res => {
+        this.iconTypes = res.data
+      })
     }
   }
 }

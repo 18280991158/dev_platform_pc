@@ -10,7 +10,8 @@ const components = {
   'systemParameter': () => import('@/views/devPlatform/systemParameter/index'),
   'myInfo': () => import('@/views/myInfo/index'),
   'changeRole': () => import('@/views/changeRole/index'),
-  'userLogin': () => import('@/views/devPlatform/userLogin/index')
+  'userLogin': () => import('@/views/devPlatform/userLogin/index'),
+  'helpDescription': () => import('@/views/devPlatform/helpDescription/index')
 
 }
 

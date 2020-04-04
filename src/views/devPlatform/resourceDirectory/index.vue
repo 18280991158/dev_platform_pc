@@ -81,8 +81,12 @@ export default {
   },
   methods: {
     getList() {
+      this.loading.getList = true
       api.list().then(res => {
+        this.loading.getList = false
         this.table.data = res.data
+      }).catch(() => {
+        this.loading.getList = false
       })
     },
     handleCreate() {
@@ -145,7 +149,7 @@ export default {
         type: 'warning'
       }).then(() => {
         api.del({ id: row.id }).then(() => {
-          this.$notify({ title: '成功', message: '删除菜单成功', type: 'success', duration: 2000 })
+          this.$notify({ title: '成功', message: '删除成功', type: 'success', duration: 2000 })
           this.$emit('delete')
           this.getList()
         })
