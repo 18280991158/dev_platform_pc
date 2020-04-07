@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import qs from 'qs'
 
 export function list() {
   return request({
@@ -12,7 +11,7 @@ export function save(data) {
   return request({
     url: '/role/save',
     method: 'post',
-    data: qs.stringify(data)
+    data
   })
 }
 

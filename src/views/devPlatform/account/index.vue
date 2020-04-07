@@ -112,7 +112,7 @@
           />
         </el-form-item>
         <el-form-item label="所属角色" prop="roleIds">
-          <el-select v-model="form.data.roleIds" :disabled="dialogStatus === 'look'" multiple collapse-tags placeholder="请选择">
+          <el-select v-model="form.data.roleIds" class="big-class" :disabled="dialogStatus === 'look'" multiple collapse-tags placeholder="请选择">
             <el-option
               v-for="item in roles"
               :key="item.value"

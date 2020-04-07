@@ -15,6 +15,12 @@
       <el-table-column type="selection" width="55" />
       <el-table-column prop="name" label="角色名称" />
       <el-table-column prop="code" label="角色标识" />
+      <el-table-column label="支持访问设备类型">
+        <template slot-scope="{row}">
+          <div v-if="deviceTypes.length !==0">
+            <dictionary v-for="item in row.deviceTypes" :key="item" :dictionary-item="deviceTypes" :value="item" />
+          </div>
+        </template></el-table-column>
       <el-table-column prop="description" label="描述" />
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
@@ -33,15 +39,25 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="20%">
-      <el-form ref="form" label-position="top" :model="form.data" :rules="form.rules">
+    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="35%">
+      <el-form ref="form" label-position="top" inline :model="form.data" :rules="form.rules">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.data.name" :disabled="dialogStatus === 'look'" />
         </el-form-item>
         <el-form-item label="角色标识" prop="code">
           <el-input v-model="form.data.code" :disabled="dialogStatus === 'look'" :readonly="dialogStatus === 'update'" />
         </el-form-item>
-        <el-form-item label="角色描述" prop="description">
+        <el-form-item class="big-class" label="允许访问设备" prop="deviceTypes">
+          <el-select v-model="form.data.deviceTypes" :disabled="dialogStatus === 'look'" multiple placeholder="请选择">
+            <el-option
+              v-for="item in deviceTypes"
+              :key="item.id"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="big-class" label="角色描述" prop="description">
           <el-input v-model="form.data.description" :disabled="dialogStatus === 'look'" type="textarea" />
         </el-form-item>
       </el-form>
@@ -93,18 +109,21 @@ export default {
           name: '',
           code: '',
           description: '',
-          internal: null
+          internal: null,
+          deviceTypes: []
         },
         data: {
           id: undefined,
           name: '',
           code: '',
           description: '',
-          internal: null
+          internal: null,
+          deviceTypes: []
         },
         rules: {
           name: { required: true, message: '请输入角色名称', trigger: 'blur' },
-          code: { required: true, validator: this.validateCode, trigger: 'blur' }
+          code: { required: true, validator: this.validateCode, trigger: 'blur' },
+          deviceTypes: { required: true, message: '请选择访问设备', trigger: 'blur' }
         }
       },
       dialogFormVisible: false,
@@ -116,11 +135,13 @@ export default {
       },
       multipleSelection: [],
       dialogAuthorityVisible: false,
-      activeName: 'setMenu'
+      activeName: 'setMenu',
+      deviceTypes: []
     }
   },
   mounted() {
     this.getList()
+    this.getDeviceTypes()
   },
   methods: {
     getList() {
@@ -254,6 +275,11 @@ export default {
         this.loading.refreshCache = false
       }).catch(() => {
         this.loading.refreshCache = false
+      })
+    },
+    getDeviceTypes() {
+      this.$listDictionaryItem({ code: 'operating_system_device_type' }).then(res => {
+        this.deviceTypes = res.data
       })
     }
 
