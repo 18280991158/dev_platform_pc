@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { MessageBox, Message } from 'element-ui'
 import router from '../router'
+import store from '@/store'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -15,7 +16,6 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    debugger
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -39,8 +39,24 @@ service.interceptors.response.use(
     if (res.code === 200) {
       return res
     }
+
     if (res.code === 401) {
-      router.push('/login')
+      if (store.getters.roles.length === 0) {
+        store.dispatch('user/logout').then(() => {
+          router.push({ path: '/login' })
+        })
+      } else {
+        MessageBox.confirm('您已注销，可以取消停留在此页面上，或者再次登录', '确定注销', {
+          confirmButtonText: '再次登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/logout').then(() => {
+            router.push({ path: '/login' })
+          })
+        })
+      }
+
       return
     }
     // if the custom code is not 20000, it is judged as an error.
