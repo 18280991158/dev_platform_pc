@@ -39,7 +39,7 @@ function convertMenu(accessedRoutes) {
         ]
       }
     } else {
-      if (route.children === undefined) {
+      if (route.children === undefined || route.children == null) {
         menu = {
           path: route.path,
           component: Layout,
